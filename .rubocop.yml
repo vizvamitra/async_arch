@@ -3,4 +3,4 @@ AllCops:
   NewCops: enable
 
 Style/StringLiterals:
-  EnforcedStyle: double_quotes
+  EnforcedStyle: no

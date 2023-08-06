@@ -1,0 +1,9 @@
+<div class="container" style="display: flex; flex-direction: row; justify-content: center">
+  <div style="padding: 10px 20px; border: 1px solid black; margin-top: 10px">
+    Logged in as: <b><%= current_user.email %></b> (<%= current_user.first_name %> <%= current_user.last_name %>)
+
+    <br><br>
+
+    <%= link_to "Logout", destroy_user_session_path, data: { "turbo-method": :delete } %>
+  </div>
+</div>
