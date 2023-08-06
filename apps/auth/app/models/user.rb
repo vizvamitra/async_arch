@@ -6,4 +6,6 @@ class User < ApplicationRecord
          :validatable
 
   enum role: { developer: 0, manager: 1, accountant: 2, admin: 3 }
+
+  validates :first_name, :last_name, :role, presence: true
 end

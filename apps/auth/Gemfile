@@ -5,6 +5,9 @@ ruby "3.2.2"
 
 gem "devise"
 gem "doorkeeper"
+gem 'waterdrop'
+gem 'dry-struct'
+gem 'dry-monads'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.6"
