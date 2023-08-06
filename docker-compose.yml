@@ -1,0 +1,21 @@
+---
+version: '3'
+services:
+  postgres:
+    image: postgres:14
+    hostname: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - history:/user/local/hist
+    environment:
+      PSQL_HISTFILE: /user/local/hist/.psql_history
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: pg_isready -U postgres -h 127.0.0.1
+      interval: 5s
+
+volumes:
+  history:
+  postgres:
