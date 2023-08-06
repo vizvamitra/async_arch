@@ -19,7 +19,7 @@ module Users
     #
     def call(**attributes)
       user = create_user(attributes)
-      return Failure(user.errors.messages) unless user.valid?
+      return Failure(user) unless user.valid?
 
       publish_event(user)
 

@@ -7,7 +7,7 @@ Doorkeeper.configure do
 
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
-    current_user || redirect_to(new_user_session_url)
+    current_user || warden.authenticate!(scope: :user)
   end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
@@ -19,7 +19,8 @@ Doorkeeper.configure do
     # Put your admin authentication logic here.
     # Example implementation:
 
-    redirect_to(root_path) unless current_user&.admin?
+    user = current_user || warden.authenticate!(scope: :user)
+    user.admin?
   end
 
   # You can use your own model classes if you need to extend (or even override) default
