@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   private
 
   def verify_admin_access
-    return if current_user.admin?
+    return if current_user&.admin?
 
     redirect_to root_path, notice: "Unauthorized!"
   end

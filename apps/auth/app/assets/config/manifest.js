@@ -3,3 +3,5 @@
 //= link_tree ../../javascript .js
 //= link_tree ../../../vendor/javascript .js
 //= link doorkeeper/admin/application.css
+//= link doorkeeper/application.css
+//= link_tree ../builds
