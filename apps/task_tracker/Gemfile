@@ -4,10 +4,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.2.2"
 
 gem "auth", path: "../../components/auth"
-# gem "devise"
-# gem "omniauth-oauth2"
-# gem "omniauth-rails_csrf_protection"
-# gem "rack-cors"
+gem "events", path: "../../components/events"
+gem "karafka"
 
 gem "rails", "~> 7.0.6"
 gem "sprockets-rails"

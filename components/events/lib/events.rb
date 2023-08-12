@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
-require_relative "events/version"
+require "waterdrop"
+require "dry-struct"
 
 module Events
   class Error < StandardError; end
-  # Your code goes here...
+
+  Types = Dry.Types()
 end
+
+# require_relative "events/version"
+Gem.find_files("events/**/*.rb").each { |path| require path }

@@ -1,3 +1,10 @@
+PATH
+  remote: ../../components/events
+  specs:
+    events (0.1.0)
+      dry-struct
+      waterdrop
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -322,7 +329,7 @@ DEPENDENCIES
   devise
   doorkeeper
   dry-monads
-  dry-struct
+  events!
   importmap-rails
   jbuilder
   pg (~> 1.1)
@@ -336,7 +343,6 @@ DEPENDENCIES
   tailwindcss-rails
   turbo-rails
   tzinfo-data
-  waterdrop
   web-console
 
 RUBY VERSION

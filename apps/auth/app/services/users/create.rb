@@ -2,7 +2,7 @@ module Users
   class Create
     include Dry::Monads[:result]
 
-    def initialize(send_event: SendEvent.new)
+    def initialize(send_event: Events::Send.new)
       @send_event = send_event
     end
 

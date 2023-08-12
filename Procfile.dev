@@ -3,3 +3,4 @@ auth_css: cd apps/auth && bin/rails tailwindcss:watch
 
 task_tracker_web: cd apps/task_tracker && bin/rails server -p 3100
 task_tracker_css: cd apps/task_tracker && bin/rails tailwindcss:watch
+task_tracker_css: cd apps/task_tracker && karafka server
