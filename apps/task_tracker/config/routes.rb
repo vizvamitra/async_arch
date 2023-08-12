@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
   mount Auth::Engine, at: "/"
   root "home#index"
 
-  # Defines the root path route ("/")
+  resources :tasks, only: %i[index new create] do
+    collection { post "reassign", to: "tasks#reassign" }
+  end
 end

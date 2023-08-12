@@ -6,6 +6,7 @@ ruby "3.2.2"
 gem "auth", path: "../../components/auth"
 gem "events", path: "../../components/events"
 gem "karafka"
+gem "dry-monads"
 
 gem "rails", "~> 7.0.6"
 gem "sprockets-rails"

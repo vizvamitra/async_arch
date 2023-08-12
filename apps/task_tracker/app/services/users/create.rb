@@ -21,6 +21,7 @@ module Users
 
     def sync(user, attributes)
       user.update!(
+        provider: "doorkeeper",
         email: attributes.fetch(:email),
         role: attributes.fetch(:role),
         first_name: attributes.fetch(:first_name),
