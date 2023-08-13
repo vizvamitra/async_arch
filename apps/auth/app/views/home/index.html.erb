@@ -1,19 +1,23 @@
-<div class="container flex flex-col items-center">
-  <% flash.each do |key, value| %>
-    <div class="text-center p-3 bg-red-100 w-full"><%= value %></div>
-  <% end %>
-  <div class="py-3 px-5 border-2 border-gray-800 mt-3">
-    <h2>
-      Logged in as: <b><%= current_user.email %></b> (<%= current_user.first_name %> <%= current_user.last_name %>)
-    </h2>
-
-    <%=
-      link_to(
-        "Sign out",
-        destroy_user_session_path,
-        data: { "turbo-method": :delete },
-        class: "underline text-blue-800"
-      )
-    %>
+<div class="w-full bg-white p-5 rounded-xl shadow-md">
+  <div class="px-0">
+    <h3 class="text-base font-semibold leading-7 text-gray-900">User Information</h3>
+  </div>
+  <div class="mt-6 border-t border-gray-100">
+    <dl class="divide-y divide-gray-100">
+      <div class="py-6 grid grid-cols-3 gap-4 px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900">Full name</dt>
+        <dd class="text-sm leading-6 text-gray-700 col-span-2 mt-0"><%= current_user.first_name %> <%= current_user.last_name %></dd>
+      </div>
+      <div class="py-6 grid grid-cols-3 gap-4 px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900">Email</dt>
+        <dd class="text-sm leading-6 text-gray-700 col-span-2 mt-0"><%= current_user.email %></dd>
+      </div>
+      <div class="py-6 grid grid-cols-3 gap-4 px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900">Role</dt>
+        <dd class="text-sm leading-6 col-span-2 mt-0 ">
+          <span class="py-1 px-3 inline-block rounded-md border-2 border-gray-200 bg-gray-100 text-semibold text-gray-900 uppercase tracking-wide"><%= current_user.role %></span>
+        </dd>
+      </div>
+    </dl>
   </div>
 </div>

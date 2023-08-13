@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="min-h-full">
   <head>
     <title>Auth</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -11,8 +11,30 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="bg-gradient-to-bl from-sky-800 via-cyan-950 via-50% to-black">
+    <header class="bg-gray-800 text-white w-full max-h-7xl">
+      <nav class="mx-auto flex justify-between max-w-screen-sm">
+        <div class="flex-auto flex items-center">
+          <a class="font-bold text-lg py-2 px-3 border-r-2 border-gray-700" href="/">Auth</a>
+
+          <ul class="flex">
+            <% if signed_in? && current_user.admin? %>
+              <li><%= link_to("Admin", admin_dashboard_path, class: "ml-3 py-2 px-3 bg-gray-900 rounded-xl text-gray-200") %></li>
+            <% end %>
+            <li class="mr-5"><%= link_to "Task Tracker", "http://localhost:3100", class: "ml-3 py-2 px-3 bg-gray-900 rounded-xl text-gray-200" %></li>
+          </ul>
+        </div>
+        <div class="shrink px-5">
+          <% if signed_in? %>
+            <%= link_to("Sign out", destroy_user_session_path, data: { "turbo-method": :delete }, class: "inline-block py-5") %>
+          <% else %>
+            <%= button_to("Sign in", new_session_path(:user), method: :post, data: { turbo: false }, class: "py-5" ) %>
+          <% end %>
+        </div>
+      </nav>
+    </header>
+
+    <main class="py-5 container mx-auto flex max-w-screen-sm">
       <%= yield %>
     </main>
   </body>

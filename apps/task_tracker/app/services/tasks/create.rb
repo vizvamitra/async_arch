@@ -15,7 +15,7 @@ module Tasks
     #
     def call(description:)
       task = create_task(description)
-      publish_event(task.reload)
+      publish_events(task.reload)
 
       Success(task)
     end
@@ -38,8 +38,13 @@ module Tasks
       Auth::User.developer.order("RANDOM()").first
     end
 
-    def publish_event(task)
-      event = Events::Streaming::TaskCreated.new(
+    def publish_evens(task)
+      send_event.call(event: created_event(task))
+      send_event.call(event: assigned_event(task))
+    end
+
+    def created_event(task)
+      Events::Streaming::TaskCreated.new(
         public_id: task.public_id,
         description: task.description,
         assignee_id: task.assignee_id,
@@ -47,8 +52,14 @@ module Tasks
         completion_reward: task.completion_reward,
         created_at: task.created_at.to_i
       )
+    end
 
-      send_event.call(event:)
+    def assigned_event(task)
+      Events::Business::TaskAssigned.new(
+        public_id: task.public_id,
+        assignee_id: task.assignee_id,
+        assigned_at: task.assigned_at.to_i
+      )
     end
   end
 end
