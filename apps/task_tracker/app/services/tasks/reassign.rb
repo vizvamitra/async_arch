@@ -36,7 +36,7 @@ module Tasks
     end
 
     def publish_event(task)
-      event = Events::TaskAssigned.new(
+      event = Events::Business::TaskAssigned.new(
         public_id: task.public_id,
         assignee_id: task.assignee_id,
         assigned_at: task.assigned_at.to_i

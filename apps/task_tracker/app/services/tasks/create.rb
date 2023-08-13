@@ -9,13 +9,12 @@ module Tasks
       @send_event = send_event
     end
 
-    # @param title [String]
     # @param description [String]
     #
     # @return [Task]
     #
-    def call(title:, description:)
-      task = create_task(title, description)
+    def call(description:)
+      task = create_task(description)
       publish_event(task.reload)
 
       Success(task)
@@ -25,9 +24,8 @@ module Tasks
 
     attr_reader :send_event
 
-    def create_task(title, description)
+    def create_task(description)
       Task.create!(
-        title:,
         description:,
         assignee: select_assignee,
         assigned_at: Time.current,
@@ -41,9 +39,8 @@ module Tasks
     end
 
     def publish_event(task)
-      event = Events::TaskCreated.new(
+      event = Events::Streaming::TaskCreated.new(
         public_id: task.public_id,
-        title: task.title,
         description: task.description,
         assignee_id: task.assignee_id,
         assignment_fee: task.assignment_fee,

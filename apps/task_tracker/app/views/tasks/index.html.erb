@@ -1,43 +1,17 @@
-<div class="flex-col w-full rounded-xl overflow-hidden shadow-2xl mt-8">
-  <div class="bg-orange-50 w-full px-5 py-5">
-    <%= form_with model: Task.new do |f| %>
-      <%= f.text_field :title, placeholder: "Title...", class: "block py-3 w-full shadow-gray-600 shadow-inner rounded-xl bg-orange-100 focus:ring-0 focus:border-0 border-0" %>
-      <%= f.text_area :description, placeholder: "Description...", class: "block mt-3 py-3 w-full  shadow-gray-600 shadow-inner rounded-xl bg-orange-100 focus:ring-0 focus:border-0 border-0 resize-none" %>
-      <div class="flex justify-end">
-        <%= f.submit "Create", class: "rounded-xl bg-emerald-500 px-6 py-2 mt-3 shadow-black shadow-sm text-white" %>
-      </div>
-    <% end %>
+<div class="flex-col w-full">
+  <%= render partial: "form" %>
+
+  <div class="mt-8">
+    <%= render partial: "tasks_list_controls", locals: { tasks: @tasks } %>
   </div>
 
-  <div class="py-5 px-5 bg-white w-full text-gray-800">
-    <% if @tasks.any? %>
-      <ul class="divide-y divide-gray-200">
-        <% @tasks.each do |task| %>
-          <li class="flex justify-between gap-6-x py-5">
-            <div class="flex-auto gap-x-4 min-w-0">
-              <p class="text-sm font-semibold leading-6 text-gray-900"><%= task.title %></p>
-              <p class="mt-1 text-xs leading-5 text-gray-500"><%= task.description %></p>
-            </div>
-            <div class="shrink-0 sm:flex sm:flex-col sm:items-end ml-2 w-1/5">
-              <p class="text-sm leading-6 text-gray-900"><%= "#{task.assignee.first_name} #{task.assignee.last_name}" %></p>
-              <p class="mt-1 text-xs leading-5 text-gray-500"><%= task.status.humanize %></p>
-              <p class="mt-1 text-xs leading-5 text-gray-500">
-                <span class="text-red-600">$<%= task.assignment_fee %></span>
-                /
-                <span class="text-green-600">$<%= task.completion_reward %></span>
-              </p>
-            </div>
-          </li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p class="text-center">There are no tasks.</p>
-    <% end %>
-
-    <% if ["manager", "admin"].include?(current_user.role) %>
-      <div class="flex justify-end">
-        <%= button_to "Reassign All Tasks", reassign_tasks_path, class: "rounded-xl bg-orange-700 px-6 py-2 mt-3 shadow-black shadow-sm text-white" %>
+  <% if @tasks.any? %>
+    <%= render partial: "tasks_list", locals: { tasks: @tasks } %>
+  <% else %>
+    <div class="bg-white w-full text-gray-800 overflow-visible py-5 rounded-xl mt-4 shadow-md shadow-black">
+      <div class="mt-3 px-5 ">
+        <p class="text-center">There are no tasks.</p>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>

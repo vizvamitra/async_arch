@@ -1,0 +1,8 @@
+<div class="bg-amber-50 w-full px-5 py-5 rounded-xl shadow-md shadow-black">
+  <%= form_with model: Task.new, class: "flex justify-between" do |f| %>
+    <%= f.text_field :description, placeholder: "Description...", class: "py-2 flex-auto shadow-gray-600 shadow-inner rounded-xl bg-amber-100 focus:ring-0 focus:border-0 border-0 resize-none text-sm" %>
+    <div>
+      <%= f.submit "Create", class: "shrink-0 px-5 py-2 ml-3 rounded-xl bg-emerald-500 text-emerald-100 text-sm font-semibold uppercase tracking-wide shadow-sm shadow-black hover:shadow-inner hover:shadow-black" %>
+    </div>
+  <% end %>
+</div>

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Auth::Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  # skip scrf protection
+  skip_before_action :verify_authenticity_token, only: :doorkeeper
+
   def doorkeeper
     user = Auth::Users::StoreFromOmniauth.new.call(auth: request.env["omniauth.auth"])
 

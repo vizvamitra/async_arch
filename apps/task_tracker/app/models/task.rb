@@ -5,6 +5,6 @@ class Task < ApplicationRecord
 
   belongs_to :assignee, class_name: "Auth::User"
 
-  validates :title, :status, :assignee, :assignment_fee, :completion_reward,
+  validates :status, :assignee, :assignment_fee, :completion_reward,
             presence: true
 end

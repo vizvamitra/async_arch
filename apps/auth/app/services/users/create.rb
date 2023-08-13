@@ -43,7 +43,7 @@ module Users
     end
 
     def publish_event(user)
-      event = Events::UserCreated.new(
+      event = Events::Streaming::UserCreated.new(
         public_id: user.public_id,
         email: user.email,
         role: user.role,
