@@ -1,0 +1,33 @@
+<div class="mt-8 w-full flex flex-col justify-center items-center">
+  <h2 class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-200">Sign in to your account</h2>
+
+  <div class="p-10 mt-6 max-w-sm w-full bg-white rounded-xl shadow-md shadow-black">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }, html: { class: "" }) do |f| %>
+      <div>
+        <%= f.label :email, class: "block text-sm font-medium leading-6 text-gray-900" %>
+        <div class="mt-2">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <%= f.label :password, class: "block text-sm font-medium leading-6 text-gray-900" %>
+        <div class="mt-2">
+          <%= f.password_field :password, autofocus: true, required: true, autocomplete: "current-password", required: true, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-between">
+        <div class="flex items-center">
+          <%= f.check_box :remember_me, class: "rounded-sm" %>
+          <%= f.label :remember_me, class: "ml-2" %>
+        </div>
+        <div>
+          <%= link_to "Forgot password?", new_password_path(resource_name), class: "text-sky-700 underline" %>
+        </div>
+      </div>
+
+      <%= f.submit "Log in", class: "mt-6 w-full rounded-xl shadow-sm shadow-black bg-sky-500 py-2 text-gray-100 text-semibold uppercase tracking-wide" %>
+    <% end %>
+  </div>
+</div>

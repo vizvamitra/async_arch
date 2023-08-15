@@ -1,0 +1,5 @@
+# iOS trash
+.DS_Store
+
+# env files
+.env*

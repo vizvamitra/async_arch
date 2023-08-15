@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  mount Auth::Engine, at: "/"
+  root "home#index"
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  resources :tasks, only: %i[index create] do
+    scope module: :tasks do
+      collection do
+        resource :reassignment, only: %i[create], as: :task_reassignment
+      end
+      resources :completions, only: %i[create]
+    end
+  end
 end

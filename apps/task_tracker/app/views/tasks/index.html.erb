@@ -1,0 +1,17 @@
+<div class="flex-col w-full">
+  <%= render partial: "form" %>
+
+  <div class="mt-8">
+    <%= render partial: "tasks_list_controls", locals: { tasks: @tasks } %>
+  </div>
+
+  <% if @tasks.any? %>
+    <%= render partial: "tasks_list", locals: { tasks: @tasks } %>
+  <% else %>
+    <div class="bg-white w-full text-gray-800 overflow-visible py-5 rounded-xl mt-4 shadow-md shadow-black">
+      <div class="mt-3 px-5 ">
+        <p class="text-center">There are no tasks.</p>
+      </div>
+    </div>
+  <% end %>
+</div>
