@@ -19,7 +19,7 @@ module Auth
     end
 
     def raw_info
-      @raw_info ||= access_token.get("/user").parsed
+      @raw_info ||= access_token.get("/employee").parsed
     end
   end
 end

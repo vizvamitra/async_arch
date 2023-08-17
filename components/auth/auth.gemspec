@@ -26,4 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "omniauth-oauth2"
   spec.add_dependency "omniauth-rails_csrf_protection"
   spec.add_dependency "rack-cors"
+  spec.add_dependency "dry-struct"
 end

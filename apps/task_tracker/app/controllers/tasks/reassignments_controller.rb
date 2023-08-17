@@ -1,9 +1,9 @@
 module Tasks
   class ReassignmentsController < ApplicationController
-    before_action :authenticate_user!
+    before_action :authenticate_identity!
 
     def create
-      result = Tasks::Reassign.new.call(user_id: current_user.id)
+      result = Tasks::Reassign.new.call(identity_id: current_identity.id)
 
       case result
       when Success, Failure

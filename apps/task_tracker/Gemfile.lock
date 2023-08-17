@@ -3,6 +3,7 @@ PATH
   specs:
     auth (0.1.0)
       devise
+      dry-struct
       omniauth-oauth2
       omniauth-rails_csrf_protection
       rack-cors

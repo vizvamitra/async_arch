@@ -1,10 +1,10 @@
 module Tasks
   class CompletionsController < ApplicationController
-    before_action :authenticate_user!
+    before_action :authenticate_identity!
 
     def create
       result = Tasks::Complete.new.call(
-        user_id: current_user.id,
+        identity_id: current_identity.id,
         task_id: params[:task_id]
       )
 

@@ -18,13 +18,12 @@
         <ul class="flex">
           <% if signed_in? %>
             <li class="mr-5 <%= "underline" if request.path == tasks_path %>"><%= link_to "Tasks", tasks_path, class: "inline-block py-5" %></li>
-            <!-- <a href="/users/<%= current_user.id %>/edit" class="mr-5">Profile</a> -->
             <li>
-              <span class="text-gray-400">(<%= "#{current_user.first_name} #{current_user.last_name}" %>)</span>
+              <span class="text-gray-400">(<%= current_employee.full_name %>)</span>
               <%=
                 link_to(
                   "Sign out",
-                  auth.destroy_user_session_path,
+                  auth.destroy_identity_session_path,
                   data: { "turbo-method": :delete },
                   class: "inline-block py-5"
                 )
@@ -35,7 +34,7 @@
               <%=
                 button_to(
                   "Sign in",
-                  auth.user_doorkeeper_omniauth_authorize_path,
+                  auth.identity_doorkeeper_omniauth_authorize_path,
                   method: :post,
                   data: { turbo: false },
                   class: "py-5"

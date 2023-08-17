@@ -1,11 +1,11 @@
 Auth::Engine.routes.draw do
-  devise_for :users, class_name: 'Auth::User', module: :devise, controllers: {
-    omniauth_callbacks: 'auth/users/omniauth_callbacks',
+  devise_for :identities, class_name: 'Auth::Identity', module: :devise, controllers: {
+    omniauth_callbacks: 'auth/identities/omniauth_callbacks',
     skip: [:sessions, :registrations]
   }
 
-  devise_scope :user do
-    get 'users/sign_in', to: 'users/sessions#new', as: :new_user_session
-    delete 'users/sign_out', to: 'users/sessions#destroy', as: :destroy_user_session
+  devise_scope :identity do
+    get 'identities/sign_in', to: 'identities/sessions#new', as: :new_identity_session
+    delete 'identities/sign_out', to: 'identities/sessions#destroy', as: :destroy_identity_session
   end
 end

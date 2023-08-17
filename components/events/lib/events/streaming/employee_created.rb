@@ -1,7 +1,7 @@
 module Events
   module Streaming
-    class UserCreated < Event
-      topic "streaming.users"
+    class EmployeeCreated < Event
+      topic "streaming.employees"
 
       attribute :public_id, Types::String
       attribute :email, Types::String

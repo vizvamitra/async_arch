@@ -7,7 +7,7 @@ class KarafkaApp < Karafka::App
     config.consumer_persistence = !Rails.env.development?
   end
 
-  Karafka.monitor.subscribe(Karafka::Instrumentation::LoggerListener.new)
+  # Karafka.monitor.subscribe(Karafka::Instrumentation::LoggerListener.new)
   # Karafka.monitor.subscribe(Karafka::Instrumentation::ProctitleListener.new)
 
   Karafka.producer.monitor.subscribe(
@@ -18,9 +18,9 @@ class KarafkaApp < Karafka::App
   )
 
   routes.draw do
-    topic :"streaming.users" do
+    topic :"streaming.employees" do
       # config(partitions: 2, 'cleanup.policy': 'compact')
-      consumer UsersConsumer
+      consumer EmployeesConsumer
     end
   end
 end

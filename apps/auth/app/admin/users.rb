@@ -1,4 +1,4 @@
-ActiveAdmin.register User do
+ActiveAdmin.register Employee do
   permit_params :email, :password, :password_confirmation, :first_name,
                 :last_name, :role
   actions :all, :except => [:destroy]
@@ -9,7 +9,7 @@ ActiveAdmin.register User do
     column :email
     column :first_name
     column :last_name
-    column(:role) { |user| status_tag user.role }
+    column(:role) { |employee| status_tag employee.role }
     column :created_at
     column :updated_at
     actions
@@ -26,7 +26,7 @@ ActiveAdmin.register User do
       row :id
       row :public_id
       row :email
-      row(:role) { |user| status_tag user.role }
+      row(:role) { |employee| status_tag employee.role }
       row :first_name
       row :last_name
       row :created_at
@@ -55,12 +55,14 @@ ActiveAdmin.register User do
 
   controller do
     def create
-      result = Users::Create.new.call(**permitted_params[:user].to_h.symbolize_keys)
+      result = Employees::Create.new.call(
+        **permitted_params[:employee].to_h.symbolize_keys
+      )
 
       result
-        .fmap { |user| redirect_to admin_user_path(user) }
-        .or do |user|
-          @user = user
+        .fmap { |employee| redirect_to admin_employee_path(employee) }
+        .or do |employee|
+          @employee = employee
           render :new
         end
     end

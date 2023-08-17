@@ -1,9 +1,9 @@
 class TasksController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_identity!
 
   def index
     @tasks = Task.order(status: :asc, created_at: :desc)
-    @tasks = @tasks.where(assignee: current_user) if params[:assigned]
+    @tasks = @tasks.where(assignee: current_employee) if params[:assigned]
   end
 
   def create

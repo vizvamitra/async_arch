@@ -1,4 +1,4 @@
-module Users
+module Employees
   class Create
     include Dry::Monads[:result]
 
@@ -14,24 +14,24 @@ module Users
     # @option attributes [String] :last_name
     # @option attributes [String] :role
     #
-    # @return [Success<User>, Failure<Hash>]
+    # @return [Success<Employee>, Failure<Hash>]
     # @raise [KeyError]
     #
     def call(**attributes)
-      user = create_user(attributes)
-      return Failure(user) unless user.valid?
+      employee = create_employee(attributes)
+      return Failure(employee) unless employee.valid?
 
-      publish_event(user)
+      publish_event(employee)
 
-      Success(user)
+      Success(employee)
     end
 
     private
 
     attr_reader :send_event
 
-    def create_user(attributes)
-      User.create(
+    def create_employee(attributes)
+      Employee.create(
         email: attributes.fetch(:email),
         password: attributes.fetch(:password),
         password_confirmation: attributes.fetch(:password_confirmation),
@@ -42,14 +42,14 @@ module Users
       )
     end
 
-    def publish_event(user)
-      event = Events::Streaming::UserCreated.new(
-        public_id: user.public_id,
-        email: user.email,
-        role: user.role,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        created_at: user.created_at.to_i
+    def publish_event(employee)
+      event = Events::Streaming::EmployeeCreated.new(
+        public_id: employee.public_id,
+        email: employee.email,
+        role: employee.role,
+        first_name: employee.first_name,
+        last_name: employee.last_name,
+        created_at: employee.created_at.to_i
       )
 
       send_event.call(event:)
