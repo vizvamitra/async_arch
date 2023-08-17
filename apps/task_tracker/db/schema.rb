@@ -10,16 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_12_153930) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_17_000049) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
-  create_table "auth_users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.integer "role", null: false
-    t.string "first_name", null: false
-    t.string "last_name", null: false
+  create_table "auth_identities", force: :cascade do |t|
+    t.string "username", null: false
     t.string "provider", limit: 50, default: ""
     t.string "uid", limit: 500, default: ""
     t.string "doorkeeper_access_token"
@@ -28,8 +25,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_12_153930) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_auth_users_on_email", unique: true
-    t.index ["provider", "uid"], name: "index_auth_users_on_provider_and_uid", unique: true
+    t.index ["provider", "uid"], name: "index_auth_identities_on_provider_and_uid", unique: true
+  end
+
+  create_table "employees", force: :cascade do |t|
+    t.bigint "identity_id"
+    t.string "public_id", null: false
+    t.string "email", null: false
+    t.integer "role", limit: 2, null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_employees_on_email", unique: true
+    t.index ["identity_id"], name: "index_employees_on_identity_id"
+    t.index ["public_id"], name: "index_employees_on_public_id", unique: true
+    t.index ["role"], name: "index_employees_on_role"
   end
 
   create_table "tasks", force: :cascade do |t|

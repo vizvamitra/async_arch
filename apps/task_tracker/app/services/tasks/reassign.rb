@@ -6,14 +6,13 @@ module Tasks
       @send_event = send_event
     end
 
-    # @param title [String]
-    # @param description [String]
+    # @param identity_id [Integer]
     #
     # @return [Task]
     #
-    def call(user_id:)
-      user = Auth::User.find(user_id)
-      return Failure(:unauthorized) unless ["manager", "admin"].include?(user.role)
+    def call(identity_id:)
+      employee = Employee.find_by!(identity_id:)
+      return Failure(:unauthorized) unless employee.manager? || employee.admin?
 
       Task.in_progress.find_each do |task|
         reassign(task)
@@ -32,13 +31,13 @@ module Tasks
     end
 
     def select_assignee
-      Auth::User.developer.order("RANDOM()").first
+      Employee.developer.order("RANDOM()").first
     end
 
     def publish_event(task)
       event = Events::Business::TaskAssigned.new(
         public_id: task.public_id,
-        assignee_id: task.assignee_id,
+        assignee_public_id: task.assignee.public_id,
         assigned_at: task.assigned_at.to_i
       )
 

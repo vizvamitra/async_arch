@@ -1,10 +1,10 @@
 module Events
   module Business
     class TaskAssigned < Event
-      topic "tasks"
+      topic "task_lifecycle"
 
       attribute :public_id, Types::String
-      attribute :assignee_id, Types::Integer
+      attribute :assignee_public_id, Types::String
       attribute :assigned_at, Types::Integer
     end
   end

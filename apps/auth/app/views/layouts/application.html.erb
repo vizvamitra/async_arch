@@ -18,7 +18,7 @@
           <a class="font-bold text-lg py-2 px-3 border-r-2 border-gray-700" href="/">Auth</a>
 
           <ul class="flex">
-            <% if signed_in? && current_user.admin? %>
+            <% if signed_in? && current_employee.admin? %>
               <li><%= link_to("Admin", admin_dashboard_path, class: "ml-3 py-2 px-3 bg-gray-900 rounded-xl text-gray-200") %></li>
             <% end %>
             <li class="mr-5"><%= link_to "Task Tracker", "http://localhost:3100", class: "ml-3 py-2 px-3 bg-gray-900 rounded-xl text-gray-200" %></li>
@@ -26,9 +26,9 @@
         </div>
         <div class="shrink px-5">
           <% if signed_in? %>
-            <%= link_to("Sign out", destroy_user_session_path, data: { "turbo-method": :delete }, class: "inline-block py-5") %>
+            <%= link_to("Sign out", destroy_employee_session_path, data: { "turbo-method": :delete }, class: "inline-block py-5") %>
           <% else %>
-            <%= button_to("Sign in", new_session_path(:user), method: :post, data: { turbo: false }, class: "py-5" ) %>
+            <%= button_to("Sign in", new_session_path(:employee), method: :post, data: { turbo: false }, class: "py-5" ) %>
           <% end %>
         </div>
       </nav>

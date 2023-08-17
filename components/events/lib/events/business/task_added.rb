@@ -1,7 +1,7 @@
 module Events
-  module Streaming
-    class TaskCreated < Event
-      topic "streaming.tasks"
+  module Business
+    class TaskAdded < Event
+      topic "task_lifecycle"
 
       attribute :public_id, Types::String
       attribute :description, Types::String

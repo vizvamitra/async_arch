@@ -1,13 +1,10 @@
 # frozen_string_literal: true
 
 # This migration comes from auth (originally 20230811091313)
-class DeviseCreateAuthUsers < ActiveRecord::Migration[7.0]
+class DeviseCreateAuthIdentities < ActiveRecord::Migration[7.0]
   def change
-    create_table :auth_users do |t|
-      t.string :email, null: false, default: ""
-      t.integer :role, null: false
-      t.string :first_name, null: false
-      t.string :last_name, null: false
+    create_table :auth_identities do |t|
+      t.string :username, null: false
 
       ## Database authenticatable
       # t.string :email,              null: false, default: ""
@@ -48,10 +45,9 @@ class DeviseCreateAuthUsers < ActiveRecord::Migration[7.0]
       t.timestamps null: false
     end
 
-    add_index :auth_users, :email,             unique: true
-    add_index :auth_users, %i[provider uid],   unique: true
-    # add_index :users, :reset_password_token, unique: true
-    # add_index :users, :confirmation_token,   unique: true
-    # add_index :users, :unlock_token,         unique: true
+    add_index :auth_identities, %i[provider uid],   unique: true
+    # add_index :auth_identities, :reset_password_token, unique: true
+    # add_index :auth_identities, :confirmation_token,   unique: true
+    # add_index :auth_identities, :unlock_token,         unique: true
   end
 end
