@@ -4,8 +4,12 @@
       <%= link_to "All", tasks_path, class: "rounded-l-xl inline-block pl-5 pr-3 py-1 hover:bg-amber-400 #{request.fullpath == tasks_path ? "shadow-inner shadow-amber-950 bg-amber-400" : "bg-amber-300" }" %><!--
       --><%= link_to "Assigned to me", tasks_path(assigned: true), class: "rounded-r-xl inline-block pl-3 pr-5 py-1 hover:bg-amber-400 #{request.fullpath == tasks_path(assigned: true) ? "shadow-inner shadow-amber-950 bg-amber-400" : "bg-amber-300"}" %>
     </ul>
-    <% if ["manager", "admin"].include?(current_employee.role) %>
-      <%= button_to "Reassign", task_reassignment_path, class: "px-5 py-1 rounded-xl bg-rose-800 shadow-sm shadow-black text-rose-200 uppercase tracking-wide shadow-md hover:shadow-inner hover:shadow-black" %>
-    <% end %>
+    <ul class="flex">
+      <% if ["manager", "admin"].include?(current_employee.role) %>
+        <%= button_to "Reassign", task_reassignment_path, class: "px-5 py-1 rounded-xl bg-rose-800 text-rose-200 shadow-sm shadow-black uppercase tracking-wide hover:shadow-inner hover:shadow-black" %>
+      <% end %>
+      <%= link_to "New", new_task_path, class: "ml-3 px-5 py-1 rounded-xl bg-emerald-500 text-emerald-100 shadow-sm shadow-black uppercase tracking-wide hover:shadow-inner hover:shadow-black", data: { turbo: true } %>
+    </ul>
   </div>
 </div>
+<!-- ml-3 px-5 py-2 rounded-xl bg-emerald-500 text-emerald-100 text-sm font-semibold uppercase tracking-wide shadow-sm shadow-black hover:shadow-inner hover:shadow-black -->

@@ -9,12 +9,13 @@ module Tasks
       @_send_events = send_events
     end
 
-    # @param description [String]
+    # @param title [String]
+    # @param jira_id [String, nil]
     #
     # @return [Task]
     #
-    def call(description:)
-      task = create_task(description)
+    def call(title:, jira_id:)
+      task = create_task(title, jira_id)
       publish_events(task.reload)
 
       Success(task)
@@ -24,9 +25,10 @@ module Tasks
 
     attr_reader :_send_events
 
-    def create_task(description)
+    def create_task(title, jira_id)
       Task.create!(
-        description:,
+        title:,
+        jira_id:,
         assignee: select_assignee,
         assigned_at: Time.current,
         assignment_fee: rand(ASSIGNMENT_FEE_RANGE),
@@ -48,9 +50,10 @@ module Tasks
     end
 
     def streaming_event(task)
-      Events::Tasks::Created::V1.new(
+      Events::Tasks::Created::V2.new(
         public_id: task.public_id,
-        description: task.description,
+        title: task.title,
+        jira_id: task.jira_id,
         assignee_public_id: task.assignee.public_id,
         assignment_fee: task.assignment_fee,
         completion_reward: task.completion_reward,

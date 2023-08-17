@@ -6,6 +6,10 @@ class TasksController < ApplicationController
     @tasks = @tasks.where(assignee: current_employee) if params[:assigned]
   end
 
+  def new
+    @task = Task.new
+  end
+
   def create
     Tasks::Create.new.call(**create_params.to_h.symbolize_keys)
     redirect_to tasks_path
@@ -14,6 +18,6 @@ class TasksController < ApplicationController
   private
 
   def create_params
-    params.require(:task).permit(:description)
+    params.require(:task).permit(:title, :jira_id)
   end
 end

@@ -1,6 +1,13 @@
-<ul>
-  <% tasks.each do |task| %>
-    <%= render partial: "task", locals: { task: } %>
-  <% end %>
-</ul>
-
+<% if @tasks.any? %>
+  <ul>
+    <% tasks.each do |task| %>
+      <li class="flex flex-col mb-5 py-3 px-5 rounded-xl bg-white shadow-xl shadow-black">
+        <%= render partial: "task", locals: { task: } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <div class="bg-white w-full text-gray-700 overflow-visible py-8 rounded-xl shadow-md shadow-black">
+    <p class="text-center">No tasks yet</p>
+  </div>
+<% end %>

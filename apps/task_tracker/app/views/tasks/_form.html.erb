@@ -1,8 +1,25 @@
-<div class="bg-amber-50 w-full px-5 py-5 rounded-xl shadow-md shadow-black">
-  <%= form_with model: Task.new, class: "flex justify-between" do |f| %>
-    <%= f.text_field :description, placeholder: "Description...", class: "py-2 flex-auto shadow-gray-600 shadow-inner rounded-xl bg-amber-100 focus:ring-0 focus:border-0 border-0 resize-none text-sm" %>
-    <div>
-      <%= f.submit "Create", class: "shrink-0 px-5 py-2 ml-3 rounded-xl bg-emerald-500 text-emerald-100 text-sm font-semibold uppercase tracking-wide shadow-sm shadow-black hover:shadow-inner hover:shadow-black" %>
+<%= form_with model: Task.new do |f| %>
+  <div class="pb-12">
+    <%= f.label :title, "Title", class: "block text-sm font-medium leading-6 text-gray-900 after:content-['*'] after:ml-0.5 after:text-red-500" %>
+    <div class="mt-2">
+      <%= f.text_field :title, required: true, placeholder: "My awesome popug-ish task...", class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" %>
     </div>
-  <% end %>
-</div>
+  </div>
+  <div class="pb-12 border-b border-gray-900/10">
+    <%= f.label :jira_id, "Jira ID", class: "block text-sm font-medium leading-6 text-gray-900" %>
+    <div class="mt-2">
+      <%= f.text_field :jira_id, placeholder: "UBERPOP-1234", class: "block w-1/2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm leading-6" %>
+    </div>
+  </div>
+  <!-- <div class="pb-12 border-b border-gray-900/10">
+    <%= f.label :description, "Description", class: "block text-sm font-medium leading-6 text-gray-900" %>
+    <div class="mt-2">
+      <%= f.text_area :description, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 resize-none", rows: 4 %>
+    </div>
+  </div> -->
+
+  <div class="flex justify-end mt-6">
+    <%= link_to "Cancel", :back, class: "px-7 py-2 rounded-xl text-gray-900 text-sm font-semibold uppercase tracking-wide hover:shadow-inner hover:bg-gray-100" %>
+    <%= f.submit "Create", class: "ml-4 px-7 py-2 rounded-xl bg-emerald-600 text-emerald-100 text-sm font-semibold uppercase tracking-wide hover:bg-emerald-500" %>
+  </div>
+<% end %>
