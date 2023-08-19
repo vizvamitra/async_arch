@@ -3,7 +3,7 @@ module Tasks
     include Dry::Monads[:result]
 
     def initialize(send_event: Events::Send.new)
-      @send_event = send_event
+      @_send_event = send_event
     end
 
     # @param identity_id [Integer]
@@ -14,9 +14,11 @@ module Tasks
       employee = Employee.find_by!(identity_id:)
       return Failure(:unauthorized) unless employee.manager? || employee.admin?
 
-      Task.in_progress.find_each do |task|
-        reassign(task)
-        publish_event(task)
+      ActiveRecord::Base.transaction do
+        Task.in_progress.find_each do |task|
+          reassign(task)
+          publish_event(task)
+        end
       end
 
       Success()
@@ -24,7 +26,7 @@ module Tasks
 
     private
 
-    attr_reader :send_event
+    attr_reader :_send_event
 
     def reassign(task)
       task.update!(assignee: select_assignee, assigned_at: Time.current)
@@ -35,13 +37,13 @@ module Tasks
     end
 
     def publish_event(task)
-      event = Events::Business::TaskAssigned.new(
+      event = Events::Tasks::Assigned::V1.new(
         public_id: task.public_id,
         assignee_public_id: task.assignee.public_id,
-        assigned_at: task.assigned_at.to_i
+        assigned_at: task.assigned_at.iso8601
       )
 
-      send_event.call(event:)
+      _send_event.call(event:)
     end
   end
 end

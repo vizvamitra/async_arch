@@ -6,7 +6,7 @@ module Tasks
     COMPLETION_REWARD_RANGE = 20..40
 
     def initialize(send_events: Events::SendBatch.new)
-      @send_events = send_events
+      @_send_events = send_events
     end
 
     # @param description [String]
@@ -22,7 +22,7 @@ module Tasks
 
     private
 
-    attr_reader :send_events
+    attr_reader :_send_events
 
     def create_task(description)
       Task.create!(
@@ -41,40 +41,28 @@ module Tasks
     def publish_events(task)
       events = [
         streaming_event(task),
-        added_event(task),
         assigned_event(task)
       ]
 
-      send_events.call(events:)
+      _send_events.call(events:)
     end
 
     def streaming_event(task)
-      Events::Streaming::TaskCreated.new(
+      Events::Tasks::Created::V1.new(
         public_id: task.public_id,
         description: task.description,
         assignee_public_id: task.assignee.public_id,
         assignment_fee: task.assignment_fee,
         completion_reward: task.completion_reward,
-        created_at: task.created_at.to_i
-      )
-    end
-
-    def added_event(task)
-      Events::Business::TaskAdded.new(
-        public_id: task.public_id,
-        description: task.description,
-        assignee_public_id: task.assignee.public_id,
-        assignment_fee: task.assignment_fee,
-        completion_reward: task.completion_reward,
-        created_at: task.created_at.to_i
+        created_at: task.created_at.iso8601
       )
     end
 
     def assigned_event(task)
-      Events::Business::TaskAssigned.new(
+      Events::Tasks::Assigned::V1.new(
         public_id: task.public_id,
         assignee_public_id: task.assignee.public_id,
-        assigned_at: task.assigned_at.to_i
+        assigned_at: task.assigned_at.iso8601
       )
     end
   end
