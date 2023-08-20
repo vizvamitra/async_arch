@@ -7,7 +7,7 @@ if Rails.env.development?
     ['manager1@example.com', "manager", "Keven", "Huel"],
     ['accountant1@example.com', "accountant", "Rusty", "Hodkiewicz"]
   ].each do |email, role, first_name, last_name|
-    pass = 'password'
+    pass = '00060029'
 
     Employees::Create.new.call(
       email:,

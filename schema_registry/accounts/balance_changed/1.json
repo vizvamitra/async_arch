@@ -1,0 +1,49 @@
+{
+  "title": "Accounts.BalanceChanged.1",
+  "description": "JSON schema for the business `accounts` event (version 1)",
+
+  "$defs": {
+    "event_name": { "enum": ["AccountBalanceChanged"] },
+    "event_version": { "enum": [1] },
+
+    "event_data": {
+      "type": "object",
+      "properties": {
+        "account_public_id":  { "type": "string", "format": "uuid" },
+        "balance":            { "type": "integer" },
+        "changed_at":         { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "account_public_id",
+        "balance",
+        "changed_at"
+      ]
+    }
+  },
+
+  "$comment": "##################### COMMON STUFF #####################",
+
+  "$schema": "http://json-schema.org/draft-07/schema#",
+
+  "type": "object",
+
+  "properties": {
+    "event_id":      { "type": "string" },
+    "event_name":    { "$ref": "#/$defs/event_name" },
+    "event_version": { "$ref": "#/$defs/event_version" },
+    "event_time":    { "type": "string" },
+    "producer":      { "type": "string" },
+
+    "data": { "$ref": "#/$defs/event_data" }
+  },
+  "additionalProperties": false,
+
+  "required": [
+    "event_id",
+    "event_name",
+    "event_version",
+    "event_time",
+    "producer",
+    "data"
+  ]
+}

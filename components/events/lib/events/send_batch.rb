@@ -46,6 +46,8 @@ module Events
       _validate.call(payload:, schema_path:)
     end
 
+    # TODO: handle kafka failures with some kind of retry mechanism
+    #
     def produce(batch)
       batch.each do |item|
         logger.debug "[Events] Producing event into `#{item[:topic]}` topic: #{item[:payload]}"

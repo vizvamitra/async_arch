@@ -1,0 +1,6 @@
+#!/bin/bash
+
+docker ps -a | grep kafka | awk '{ print $1 }' | xargs docker rm
+docker ps -a | grep async_arch-postgres | awk '{ print $1 }' | xargs docker rm
+
+docker volume ls | grep -v 'sweatcoin' | awk '{ print $2 }' | xargs docker volume rm

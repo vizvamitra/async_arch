@@ -1,7 +1,9 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+[
+  ["Cash", :asset, Accounts::Numbers::CASH],
+  ["Capital", :equity, Accounts::Numbers::CAPITAL],
+  ["Task Assignment Fees", :revenue, Accounts::Numbers::TASK_ASSIGNMENT_FEES],
+  ["Task Completion Rewards", :expense, Accounts::Numbers::TASK_COMPLETION_REWARDS],
+  ["Income Sumary", :temporary, Accounts::Numbers::INCOME_SUMMARY]
+].each do |name, category, number|
+  Accounts::Create.new.call(name:, category:, number:)
+end

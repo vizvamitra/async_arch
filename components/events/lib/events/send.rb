@@ -30,7 +30,7 @@ module Events
       in Success(payload)
         produce(topic, payload.to_json)
       in Failure(errors)
-        raise EventPayloadInvalidError, errors.join(", ")
+        raise EventPayloadInvalidError, Array(errors).join(", ")
       end
     end
 
@@ -46,6 +46,8 @@ module Events
       _validate.call(payload:, schema_path:)
     end
 
+    # TODO: handle kafka failures with some kind of retry mechanism
+    #
     def produce(topic, payload)
       logger.debug "[Events] Producing event into `#{topic}` topic: #{payload}"
       producer.produce_sync(topic:, payload: payload)

@@ -1,0 +1,65 @@
+<div class="flex flex-col w-full">
+  <% if current_employee.accountant? || current_employee.admin? %>
+    <div class="w-full rounded-xl bg-white p-10 shadow-lg shadow-black">
+      <h2 class="font-semibold text-lg tracking-wide text-center">System accounts</h2>
+
+      <table class="w-full mt-8 border-collapse border border-slate-400">
+        <thead clas="bg-slate-50">
+          <tr>
+            <th class="p-4 border border-slate-300 font-semibold text-slate-900 text-left">Number</th>
+            <th class="p-4 border border-slate-300 font-semibold text-slate-900 text-left">Name</th>
+            <th class="p-4 border border-slate-300 font-semibold text-slate-900 text-left">Category</th>
+            <th class="p-4 border border-slate-300 font-semibold text-slate-900 text-left">Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @system_accounts.each do |account| %>
+            <tr>
+              <td class="p-4 text-sm border border-slate-300 text-slate-500"><%= account.number %></td>
+              <td class="p-4 text-sm border border-slate-300 text-slate-500"><%= account.name %></td>
+              <td class="p-4 text-sm border border-slate-300 text-slate-500"><%= account.category %></td>
+              <td class="p-4 text-sm border border-slate-300 text-slate-500"><%= account.balance %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+
+  <div class="w-full rounded-xl bg-white p-10 shadow-lg shadow-black mt-8">
+    <h2 class="font-semibold text-lg tracking-wide text-center">Personal account</h2>
+
+    <p class="mt-8"><span class="font-semibold">Balance</span>: <%= @employee_account.balance %></p>
+
+    <h3 class="mt-8 font-semibold text-md tracking-wide text-center">Transactions</h3>
+
+    <table class="w-full mt-8 border-collapse border border-slate-400">
+      <thead clas="bg-slate-50">
+        <tr class="">
+          <th class="p-4 border border-slate-300 font-semibold text-slate-900 text-left">Date</th>
+          <th class="p-4 border border-slate-300 font-semibold text-slate-900 text-left">Amount</th>
+          <th class="p-4 border border-slate-300 font-semibold text-slate-900 text-left">Description</th>
+          <th class="p-4 border border-slate-300 font-semibold text-slate-900 text-left">Reference</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @entries.each do |entry| %>
+          <tr>
+            <td class="p-4 text-sm border border-slate-300 text-slate-900">
+              <%= entry.created_at %>
+            </td>
+            <td class="p-4 text-sm border border-slate-300 text-slate-900">
+              <%= "#{ entry.debit? ? '-' : '+' }$#{entry.amount}" %>
+            </td>
+            <td class="p-4 text-sm border border-slate-300 text-slate-900">
+              <%= entry.transfer.description %>
+            </td>
+            <td class="p-4 text-sm border border-slate-300 text-slate-900">
+              <%= entry.transfer.reference.title_with_jira_id %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_17_213707) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_20_131746) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -48,8 +48,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_17_213707) do
     t.string "title", null: false
     t.integer "status", limit: 2, default: 0, null: false
     t.bigint "assignee_id", null: false
-    t.integer "assignment_fee", null: false
-    t.integer "completion_reward", null: false
     t.datetime "assigned_at", null: false
     t.datetime "completed_at"
     t.datetime "created_at", null: false

@@ -2,9 +2,6 @@ module Tasks
   class Create
     include Dry::Monads[:result]
 
-    ASSIGNMENT_FEE_RANGE = 10..20
-    COMPLETION_REWARD_RANGE = 20..40
-
     def initialize(send_events: Events::SendBatch.new)
       @_send_events = send_events
     end
@@ -30,9 +27,7 @@ module Tasks
         title:,
         jira_id:,
         assignee: select_assignee,
-        assigned_at: Time.current,
-        assignment_fee: rand(ASSIGNMENT_FEE_RANGE),
-        completion_reward: rand(COMPLETION_REWARD_RANGE)
+        assigned_at: Time.current
       )
     end
 
@@ -50,13 +45,11 @@ module Tasks
     end
 
     def streaming_event(task)
-      Events::Tasks::Created::V2.new(
+      Events::Tasks::Created::V3.new(
         public_id: task.public_id,
         title: task.title,
         jira_id: task.jira_id,
         assignee_public_id: task.assignee.public_id,
-        assignment_fee: task.assignment_fee,
-        completion_reward: task.completion_reward,
         created_at: task.created_at.iso8601
       )
     end
