@@ -38,7 +38,7 @@ module Accounts
     end
 
     def publish_event(account)
-      event = Events::Accounts::Created::V1.new(
+      event = Events::Accounts::Created::V2.new(
         public_id: account.public_id,
         owner_public_id: account.owner&.public_id,
         number: account.number,

@@ -41,8 +41,9 @@ module Transfers
 
     def send_events(transfer)
       events = transfer.entries.map do |entry|
-        Events::Accounts::BalanceChanged::V1.new(
+        Events::Accounts::BalanceChanged::V2.new(
           account_public_id: entry.account.public_id,
+          owner_public_id: entry.account.owner&.public_id,
           balance: entry.account.balance,
           changed_at: transfer.created_at.iso8601
         )

@@ -4,10 +4,12 @@ module Tasks
 
     def initialize(store_employee: Employees::Store.new,
                    store_task: Tasks::Store.new,
-                   create_transfer: Transfers::Create.new)
+                   create_transfer: Transfers::Create.new,
+                   send_event: Events::Send.new)
       @_store_employee = store_employee
       @_store_task = store_task
       @_create_transfer = create_transfer
+      @_send_event = send_event
     end
 
     # @param task_public_id [String]
@@ -17,17 +19,22 @@ module Tasks
     #
     def call(task_public_id:, assignee_public_id:)
       task = find_task(task_public_id)
-
-      employee_account = find_employee(assignee_public_id).account
+      employee = find_employee(assignee_public_id)
       expense_account = Account.task_completion_expense
 
-      entries = build_entries(task, employee_account, expense_account)
-      create_transfer(task, entries)
+      entries = build_entries(task, employee.account, expense_account)
+
+      ActiveRecord::Base.transaction do
+        transfer = create_transfer(task, entries)
+        send_event(task, employee, transfer)
+
+        transfer
+      end
     end
 
     private
 
-    attr_reader :_store_employee, :_store_task, :_create_transfer
+    attr_reader :_store_employee, :_store_task, :_create_transfer, :_send_event
 
     def find_task(public_id)
       _store_task.call(public_id:)
@@ -54,6 +61,17 @@ module Tasks
 
     def build_entry(side, account, amount)
       Entries::Attributes.new(side:, account:, amount:)
+    end
+
+    def send_event(task, employee, transfer)
+      event = Events::Transactions::TaskCompletionRewardPaid::V1.new(
+        task_public_id: task.public_id,
+        employee_public_id: employee.public_id,
+        amount: task.completion_reward,
+        paid_at: transfer.created_at.iso8601
+      )
+
+      _send_event.call(event:)
     end
   end
 end

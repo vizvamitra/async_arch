@@ -1,7 +1,7 @@
 module Employees
   class Store
-    def initialize(create_account: Accounts::CreateForEmployee.new)
-      @_create_account = create_account
+    def initialize(store_employee_dimension: Dimensions::Employees::Store.new)
+      @_store_employee_dimension = store_employee_dimension
     end
 
     # @param public_id [String]
@@ -11,14 +11,13 @@ module Employees
     # @param last_name [String]
     #
     # @return [Employee]
+    # @raise [KeyError]
     #
     def call(public_id:, **attributes)
       employee = Employee.find_or_initialize_by(public_id:)
+      sync(employee, attributes)
 
-      ActiveRecord::Base.transaction do
-        sync(employee, attributes)
-        create_account(employee) if employee.account.nil?
-      end
+      store_employee_dimension(public_id, attributes)
 
       employee
     rescue ActiveRecord::RecordNotUnique
@@ -27,7 +26,7 @@ module Employees
 
     private
 
-    attr_reader :_create_account
+    attr_reader :_store_employee_dimension
 
     def sync(employee, attributes)
       employee.update!(
@@ -38,8 +37,8 @@ module Employees
       )
     end
 
-    def create_account(employee)
-      _create_account.call(employee:)
+    def store_employee_dimension(public_id, attributes)
+      _store_employee_dimension.call(public_id:, **attributes)
     end
   end
 end

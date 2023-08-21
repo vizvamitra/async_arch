@@ -6,7 +6,8 @@ Rails.application.config.after_initialize do
     config.logger = Rails.logger
     config.topic_mapping = {
       'accounts/created' => 'accounts.streaming',
-      'accounts/balance_changed' => 'accounts'
+      'accounts/balance_changed' => 'accounts',
+      'transactions/task_completion_reward_paid' => 'transactions'
     }
   end
 end

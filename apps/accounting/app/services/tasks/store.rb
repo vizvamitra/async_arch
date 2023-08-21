@@ -33,8 +33,8 @@ module Tasks
 
     def sync(task, attributes)
       task.update!(
-        title: task.title || attributes.fetch(:title, nil),
-        jira_id: task.jira_id || attributes.fetch(:jira_id, nil)
+        title: attributes[:title] || task.title,
+        jira_id: attributes[:jira_id] || task.jira_id
       )
     end
   end
