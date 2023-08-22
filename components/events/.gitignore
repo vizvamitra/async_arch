@@ -9,3 +9,6 @@
 
 # rspec failure tracking
 .rspec_status
+
+# We don't beed this in the repo
+Gemfile.lock

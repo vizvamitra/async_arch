@@ -1,0 +1,52 @@
+{
+  "title": "Tasks.Created.3",
+  "description": "JSON schema for the streaming `tasks` event (version 3)",
+
+  "$defs": {
+    "event_name": { "enum": ["TaskCreated"] },
+    "event_version": { "enum": [3] },
+
+    "event_data": {
+      "type": "object",
+      "properties": {
+        "public_id":          { "type": "string", "format": "uuid" },
+        "title":              { "type": "string", "pattern": "[^\\[\\]]+" },
+        "jira_id":            { "type": "string"  },
+        "assignee_public_id": { "type": "string", "format": "uuid"  },
+        "created_at":         { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "public_id",
+        "title",
+        "assignee_public_id",
+        "created_at"
+      ]
+    }
+  },
+
+  "$comment": "##################### COMMON STUFF #####################",
+
+  "$schema": "http://json-schema.org/draft-07/schema#",
+
+  "type": "object",
+
+  "properties": {
+    "event_id":      { "type": "string" },
+    "event_name":    { "$ref": "#/$defs/event_name" },
+    "event_version": { "$ref": "#/$defs/event_version" },
+    "event_time":    { "type": "string" },
+    "producer":      { "type": "string" },
+
+    "data": { "$ref": "#/$defs/event_data" }
+  },
+  "additionalProperties": false,
+
+  "required": [
+    "event_id",
+    "event_name",
+    "event_version",
+    "event_time",
+    "producer",
+    "data"
+  ]
+}

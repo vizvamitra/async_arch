@@ -3,7 +3,7 @@ module Employees
     include Dry::Monads[:result]
 
     def initialize(send_event: Events::Send.new)
-      @send_event = send_event
+      @_send_event = send_event
     end
 
     # @param attributes [Hash]
@@ -18,20 +18,23 @@ module Employees
     # @raise [KeyError]
     #
     def call(**attributes)
-      employee = create_employee(attributes)
+      employee = build_employee(attributes)
       return Failure(employee) unless employee.valid?
 
-      publish_event(employee)
+      ActiveRecord::Base.transaction do
+        employee.save!
+        publish_event(employee)
+      end
 
       Success(employee)
     end
 
     private
 
-    attr_reader :send_event
+    attr_reader :_send_event
 
-    def create_employee(attributes)
-      Employee.create(
+    def build_employee(attributes)
+      Employee.new(
         email: attributes.fetch(:email),
         password: attributes.fetch(:password),
         password_confirmation: attributes.fetch(:password_confirmation),
@@ -43,16 +46,16 @@ module Employees
     end
 
     def publish_event(employee)
-      event = Events::Streaming::EmployeeCreated.new(
+      event = Events::Employees::Created::V1.new(
         public_id: employee.public_id,
         email: employee.email,
         role: employee.role,
         first_name: employee.first_name,
         last_name: employee.last_name,
-        created_at: employee.created_at.to_i
+        created_at: employee.created_at.iso8601
       )
 
-      send_event.call(event:)
+      _send_event.call(event:)
     end
   end
 end

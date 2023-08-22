@@ -1,0 +1,10 @@
+module Accounts
+  module Numbers
+    CASH = 1010
+    EMPLOYEE = 2010
+    CAPITAL = 3010
+    TASK_ASSIGNMENT_FEES = 4010
+    TASK_COMPLETION_REWARDS = 5010
+    INCOME_SUMMARY = 6010
+  end
+end

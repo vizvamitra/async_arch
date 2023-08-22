@@ -2,8 +2,8 @@
 
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.kafka = { 'bootstrap.servers': '127.0.0.1:9092' }
-    config.client_id = 'task_tracker'
+    config.kafka = { 'bootstrap.servers': ENV['KAFKA_HOST'] }
+    config.client_id = ENV['PRODUCER_NAME']
     config.consumer_persistence = !Rails.env.development?
   end
 
@@ -18,7 +18,7 @@ class KarafkaApp < Karafka::App
   )
 
   routes.draw do
-    topic :"streaming.employees" do
+    topic :"employees.streaming" do
       # config(partitions: 2, 'cleanup.policy': 'compact')
       consumer EmployeesConsumer
     end

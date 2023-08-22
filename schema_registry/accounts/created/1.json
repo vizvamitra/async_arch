@@ -1,0 +1,55 @@
+{
+  "title": "Accounts.Created.1",
+  "description": "JSON schema for the streaming `accounts` event (version 1)",
+
+  "$defs": {
+    "event_name": { "enum": ["AccountCreated"] },
+    "event_version": { "enum": [1] },
+
+    "event_data": {
+      "type": "object",
+      "properties": {
+        "public_id":          { "type": "string", "format": "uuid" },
+        "number":             { "type": "integer" },
+        "category":           { "enum": ["asset", "liability", "equity", "revenue", "expense", "temporary"] },
+        "name":               { "type": "string" },
+        "contra":             { "type": "boolean" },
+        "created_at":         { "type": "string", "format": "date-time"  }
+      },
+      "required": [
+        "public_id",
+        "number",
+        "category",
+        "name",
+        "contra",
+        "created_at"
+      ]
+    }
+  },
+
+  "$comment": "##################### COMMON STUFF #####################",
+
+  "$schema": "http://json-schema.org/draft-07/schema#",
+
+  "type": "object",
+
+  "properties": {
+    "event_id":      { "type": "string" },
+    "event_name":    { "$ref": "#/$defs/event_name" },
+    "event_version": { "$ref": "#/$defs/event_version" },
+    "event_time":    { "type": "string" },
+    "producer":      { "type": "string" },
+
+    "data": { "$ref": "#/$defs/event_data" }
+  },
+  "additionalProperties": false,
+
+  "required": [
+    "event_id",
+    "event_name",
+    "event_version",
+    "event_time",
+    "producer",
+    "data"
+  ]
+}

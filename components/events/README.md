@@ -1,31 +1,51 @@
 # Events
 
-TODO: Delete this and the text below, and describe your gem
+An event producing library that integrate ruby apps with our schema registry & message brocker.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/events`. To experiment with that code, run `bin/console` for an interactive prompt.
+1. Add the gem to your `Gemfile`:
 
-## Installation
+```ruby
+gem 'events', path: '../../components/events'
+```
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+```bash
+bundle install
+```
 
-Install the gem and add to the application's Gemfile by executing:
+2. Configure the library:
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+```ruby
+# config/initializers/events.rb
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+Rails.application.config.after_initialize do
+  Events.configure do |config|
+    config.producer_name = ENV["PRODUCER_NAME"]
+    config.schema_registry_path = ENV["SCHEMA_REGISTRY_PATH"]
+    config.producer = Karafka.producer # or pure Waterdrop::Producer
+    config.logger = Rails.logger
+    config.topic_mapping = {
+      # EVENT TYPE        | TOPIC NAME
+      'accounts/created' => 'accounts.streaming',
+      'accounts/balance_changed' => 'accounts'
+    }
+  end
+end
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+Send events like this:
 
-## Development
+```ruby
+event = Events::Employees::Created::V1.new(...)
+Events::Send.new.call(event:)
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+# Or, for batch sending:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/events.
+events = [
+  Events::Tasks::Created::V3.new(...),
+  Events::Tasks::Assigned::V1.new(...)
+]
+Events::SendBatch.new.call(events:)
+```

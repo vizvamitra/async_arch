@@ -5,6 +5,5 @@ class Task < ApplicationRecord
 
   belongs_to :assignee, class_name: "Employee", inverse_of: :tasks
 
-  validates :status, :assignee, :assignment_fee, :completion_reward,
-            presence: true
+  validates :status, :assignee, presence: true
 end

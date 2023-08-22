@@ -3,7 +3,13 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.2"
 
-# efault rails stuff
+gem "auth", path: "../../components/auth"
+gem "events", path: "../../components/events"
+gem "karafka"
+gem "dry-monads"
+gem "pry-rails"
+
+# Default rails stuff
 gem "rails", "~> 7.0.7"
 gem "sprockets-rails"
 gem "pg", "~> 1.1"
@@ -23,6 +29,7 @@ gem "bootsnap", require: false
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem 'dotenv-rails'
 end
 
 group :development do

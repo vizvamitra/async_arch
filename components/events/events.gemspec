@@ -28,5 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "dry-struct"
+  spec.add_dependency "dry-monads"
   spec.add_dependency "waterdrop"
+  spec.add_dependency "json_schemer"
 end
