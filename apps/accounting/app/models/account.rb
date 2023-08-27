@@ -12,7 +12,7 @@ class Account < ApplicationRecord
 
   has_one :employee, required: false, inverse_of: :account
   has_many :entries, inverse_of: :account
-  has_many :transactions, through: :entries
+  has_many :transfers, through: :entries
   belongs_to :owner, class_name: 'Employee', required: false, inverse_of: :account
 
   validates :number, :category, :name, presence: true
@@ -27,10 +27,6 @@ class Account < ApplicationRecord
 
   def self.cash_asset
     find_by!(number: Accounts::Numbers::CASH)
-  end
-
-  def self.capital_equity
-    find_by!(number: Accounts::Numbers::CAPITAL)
   end
 
   def self.capital_equity

@@ -4,6 +4,15 @@ networks:
   async_auth:
 
 services:
+  redis:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6380:6379'
+    command: redis-server --save 20 1
+    volumes:
+      - redis:/data
+
   postgres:
     image: postgres:14
     hostname: postgres
@@ -60,3 +69,4 @@ services:
 volumes:
   history:
   postgres:
+  redis:

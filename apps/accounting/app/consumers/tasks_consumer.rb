@@ -9,12 +9,12 @@ class TasksConsumer < ApplicationConsumer
       when "TaskCreated"
         Tasks::Store.new.call(**event_data)
       when "TaskAssigned"
-        Tasks::ChargeAssignmentFee.new.call(
+        Tasks::HandleAssignment.new.call(
           task_public_id: event_data[:public_id],
           assignee_public_id: event_data[:assignee_public_id]
         )
       when "TaskCompleted"
-        Tasks::RewardCompletion.new.call(
+        Tasks::HandleCompletion.new.call(
           task_public_id: event_data[:public_id],
           assignee_public_id: event_data[:assignee_public_id]
         )

@@ -7,3 +7,8 @@
 ].each do |name, category, number|
   Accounts::Create.new.call(name:, category:, number:)
 end
+
+AccountingPeriods::Switch.new.call
+
+INITIAL_INVESTMENT = 100_000
+Operations::ContributeToCapital.new.call(amount: INITIAL_INVESTMENT)
