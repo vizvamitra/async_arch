@@ -12,8 +12,8 @@
         "public_id":          { "type": "string", "format": "uuid"  },
         "description":        { "type": "string"  },
         "assignee_public_id": { "type": "string", "format": "uuid"  },
-        "assignment_fee":     { "type": "integer" },
-        "completion_reward":  { "type": "integer" },
+        "assignment_fee":     { "type": "number" },
+        "completion_reward":  { "type": "number" },
         "created_at":         { "type": "string", "format": "date-time"  }
       },
       "required": [

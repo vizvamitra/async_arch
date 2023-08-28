@@ -7,7 +7,10 @@ class TasksConsumer < ApplicationConsumer
 
       case message.payload["event_name"]
       when "TaskCreated"
-        Tasks::Store.new.call(**event_data)
+        case message.payload["event_version"]
+        when 1 then Tasks::StoreV1.new.call(**event_data)
+        when 2 then Tasks::Store.new.call(**event_data)
+        end
       when "TaskAssigned"
         Tasks::HandleAssignment.new.call(
           task_public_id: event_data[:public_id],
