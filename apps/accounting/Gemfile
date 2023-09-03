@@ -8,6 +8,8 @@ gem "events", path: "../../components/events"
 gem "karafka"
 gem "dry-monads"
 gem "pry-rails"
+gem "sidekiq"
+gem "sidekiq-cron"
 
 # Default rails stuff
 gem "rails", "~> 7.0.7"

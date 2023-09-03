@@ -13,16 +13,12 @@
         "title":              { "type": "string", "pattern": "[^\\[\\]]+" },
         "jira_id":            { "type": "string"  },
         "assignee_public_id": { "type": "string", "format": "uuid"  },
-        "assignment_fee":     { "type": "integer" },
-        "completion_reward":  { "type": "integer" },
         "created_at":         { "type": "string", "format": "date-time" }
       },
       "required": [
         "public_id",
         "title",
         "assignee_public_id",
-        "assignment_fee",
-        "completion_reward",
         "created_at"
       ]
     }

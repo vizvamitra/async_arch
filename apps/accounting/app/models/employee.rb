@@ -3,6 +3,7 @@ class Employee < ApplicationRecord
 
   belongs_to :identity, class_name: "Auth::Identity", required: false
   has_one :account, foreign_key: :owner_id, inverse_of: :owner
+  has_many :payment_cycles, inverse_of: :employee
 
   validates :public_id, presence: true
 

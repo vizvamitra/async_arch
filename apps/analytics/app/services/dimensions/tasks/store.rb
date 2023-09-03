@@ -10,6 +10,8 @@ module Dimensions
       def call(public_id:, **attributes)
         task = Task.find_or_initialize_by(public_id:)
         sync(task, attributes)
+
+        task
       end
 
       private

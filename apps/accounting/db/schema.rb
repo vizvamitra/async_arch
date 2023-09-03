@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_20_153824) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_27_133232) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "accounting_periods", force: :cascade do |t|
+    t.string "description"
+    t.date "start", null: false
+    t.date "end", null: false
+    t.boolean "closed", default: false, null: false
+    t.datetime "closed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["closed"], name: "index_accounting_periods_on_closed", unique: true, where: "(closed IS FALSE)"
+  end
 
   create_table "accounts", force: :cascade do |t|
     t.uuid "public_id", default: -> { "uuid_generate_v4()" }, null: false
@@ -27,7 +38,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_20_153824) do
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["number"], name: "index_accounts_on_number"
-    t.index ["owner_id"], name: "index_accounts_on_owner_id"
+    t.index ["owner_id"], name: "index_accounts_on_owner_id", unique: true
     t.index ["public_id"], name: "index_accounts_on_public_id", unique: true
   end
 
@@ -71,6 +82,37 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_20_153824) do
     t.index ["transfer_id"], name: "index_entries_on_transfer_id"
   end
 
+  create_table "financial_statements", force: :cascade do |t|
+    t.integer "kind", limit: 2, null: false
+    t.bigint "accounting_period_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accounting_period_id"], name: "index_financial_statements_on_accounting_period_id"
+    t.index ["kind", "accounting_period_id"], name: "index_financial_statements_on_kind_and_accounting_period_id", unique: true
+  end
+
+  create_table "payment_cycles", force: :cascade do |t|
+    t.bigint "employee_id", null: false
+    t.boolean "closed", default: false, null: false
+    t.datetime "closed_at"
+    t.date "date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id", "closed"], name: "index_payment_cycles_on_employee_id_and_closed", unique: true, where: "(closed IS FALSE)"
+    t.index ["employee_id", "date"], name: "index_payment_cycles_on_employee_id_and_date", unique: true
+  end
+
+  create_table "statement_line_items", force: :cascade do |t|
+    t.bigint "statement_id", null: false
+    t.integer "section", limit: 2, null: false
+    t.string "label", null: false
+    t.integer "amount", null: false
+    t.integer "section_position", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["statement_id"], name: "index_statement_line_items_on_statement_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.string "public_id", null: false
     t.string "title"
@@ -83,13 +125,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_20_153824) do
 
   create_table "transfers", force: :cascade do |t|
     t.uuid "public_id", default: -> { "uuid_generate_v4()" }, null: false
+    t.integer "kind", limit: 2
     t.string "description", null: false
     t.string "reference_type"
     t.bigint "reference_id"
-    t.date "date", null: false
+    t.bigint "accounting_period_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["date"], name: "index_transfers_on_date"
+    t.index ["accounting_period_id"], name: "index_transfers_on_accounting_period_id"
+    t.index ["kind"], name: "index_transfers_on_kind"
+    t.index ["public_id"], name: "index_transfers_on_public_id"
     t.index ["reference_type", "reference_id"], name: "index_transfers_on_reference"
   end
 
